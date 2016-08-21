@@ -3,13 +3,16 @@ class SVG:
     raise NotImplementedError("'render' method required")
 
 class SVGRoot(SVG):
-  def __init__(self):
-    self._xmlns = "http://www.w3.org/2000/svg" 
+  def __init__(self, width = 0, height = 0):
     self._tag = "svg"
-    self._viewbox = ""
-    self._width = ""
-    self._height = ""
+    self._xmlns = "http://www.w3.org/2000/svg" 
+    self.viewbox(0, 0, width, height)
+    self._width = width
+    self._height = height
     self._children = []
+
+  def viewbox(self, minx, miny, width, height):
+    self._viewbox = "{0} {1} {2} {3}".format(minx, miny, width, height)
 
   def addElement(self, element):
     if hasattr(element.render, '__call__'):
@@ -39,12 +42,13 @@ class SVGRoot(SVG):
 
 
 class SVGElement(SVG):
-  def __init__(self, tag, id = ""):
+  def __init__(self, tag, inline = True, id = ""):
     self._tag = tag
     self._id = ""
+    self._inline = inline
     self.children = []
     self.class_list = []
-    self.attributes = []
+    self.attributes = {}
 
   @property
   def tag(self):
@@ -66,7 +70,7 @@ class SVGElement(SVG):
     self.children.append(element)
 
   def addAttribute(self, key, value):
-    self.attributes.append({ key: value})
+    self.attributes[key] = value
 
   def addClass(self, class_name):
     self.classes.append(class_name)
@@ -78,10 +82,10 @@ class SVGElement(SVG):
     return self.renderBlock()
 
   def renderInline(self):
-    print "inline"
+    return self.open() + "/>\n"
 
   def renderBlock(self):
-    elem = self.open()
+    elem = self.open() + ">\n"
     for child in self.children:
       elem += child.render()
 
@@ -90,12 +94,13 @@ class SVGElement(SVG):
   def open(self):
     elem = "<{0}".format(self._tag)
     for attribute in self.attributes:
-      for key in attribute:
         template = " {0}='{1}'"
-        elem += template.format(key, str(attribute[key]))
+        elem += template.format(attribute, str(self.attributes[attribute]))
+
+    return elem
 
   def close(self):
-    return "</{0}>" % self.tag
+    return "</{0}>\n" % self.tag
 
 
 class SVGTextNode(SVG):
