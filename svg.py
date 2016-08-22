@@ -10,35 +10,54 @@ class SVGRoot(SVG):
     self._width = width
     self._height = height
     self._children = []
+    self._styles = {}
 
   def viewbox(self, minx, miny, width, height):
     self._viewbox = "{0} {1} {2} {3}".format(minx, miny, width, height)
 
-  def addElement(self, element):
+  def add(self, element):
     if hasattr(element.render, '__call__'):
       # TODO: raise exception where no render
       self._children.append(element)
 
+  def style(self, styles):
+        self._styles = styles
+
   def render(self):
     formatted = self.open()
-    # render children
     for child in self._children:
       formatted += child.render()
+
+    if self._styles:
+      formatted += self.renderStyles()
 
     formatted += self.close()
     return formatted
 
   def open(self):
     s = ('<%(_tag)s'
-          ' viewBox="%(_viewbox)s"'
-          ' width="%(_width)s" height="%(_height)s"'
-          ' xmlns="%(_xmlns)s"'
-          '>\n'
-          )
+         ' viewBox="%(_viewbox)s"'
+         ' width="%(_width)s" height="%(_height)s"'
+         ' xmlns="%(_xmlns)s"'
+         '>\n'
+         )
     return s % self.__dict__
 
   def close(self):
     return '</{0}>'.format(self._tag)
+
+  def renderStyles(self):
+    template = "<style><![CDATA[{0}\n]]></style>"
+    declaration = ""
+    block = ""
+    for selector in self._styles:
+      pair = self._styles[selector]
+      declaration = ""
+      for prop in pair:
+        declaration += "{0}:{1}; ".format(prop, pair[prop])
+
+      block += "\n{0} {{ {1}}}".format(selector, declaration)
+    return template.format(block)
 
 
 class SVGElement(SVG):
@@ -66,7 +85,7 @@ class SVGElement(SVG):
   def id(self, id):
     self._id = id
 
-  def addElement(self, element):
+  def add(self, element):
     self.children.append(element)
 
   def addAttribute(self, key, value):
@@ -100,7 +119,7 @@ class SVGElement(SVG):
     return elem
 
   def close(self):
-    return "</{0}>\n" % self.tag
+    return "</{0}>\n".format(self.tag)
 
 
 class SVGTextNode(SVG):

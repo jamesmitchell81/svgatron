@@ -1,0 +1,9 @@
+<svg viewBox="0 0 500 300" width="500" height="300" xmlns="http://www.w3.org/2000/svg">
+<line stroke-width='1' y2='290' x2='10' stroke='black' y1='10' x1='10'/>
+<line stroke-width='1' y2='290' x2='490' stroke='black' y1='290' x1='10'/>
+<line stroke-width='1' y2='295' x2='0' stroke='black' y1='280' x1='0'/>
+<line stroke-width='1' y2='295' x2='10' stroke='black' y1='280' x1='10'/>
+<line stroke-width='1' y2='295' x2='20' stroke='black' y1='280' x1='20'/>
+<line stroke-width='1' y2='295' x2='30' stroke='black' y1='280' x1='30'/>
+<line stroke-width='1' y2='295' x2='40' stroke='black' y1='280' x1='40'/>
+</svg>
