@@ -1,3 +1,4 @@
+import math
 from svg import SVGElement, SVGRoot
 from elements import Line, Text, Transform
 from collect_data import collect_data
@@ -81,6 +82,10 @@ def main():
 
   # y-ticks
   range_top = (data_max / 4) * 5
+  range_top = int(math.ceil(range_top / 10.0) * 10)
+
+  print range_top
+
   tick_count = (range_top - (range_top % 10)) / 10
   tick_space = float(graph_height) / tick_count
   dy = 0.33
