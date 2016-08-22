@@ -28,9 +28,9 @@ def main():
 
   root = SVGRoot(width, height)
   root.style({
-    "svg": {
-      "border": "1px solid #000"
-    },
+    # "svg": {
+    #   "border": "1px solid #000"
+    # },
     "text": {
       "font": "11px Verdana, Helvetica, Arial, sans-serif",
       "color": "#f00"
@@ -83,8 +83,6 @@ def main():
   # y-ticks
   range_top = (data_max / 4) * 5
   range_top = int(math.ceil(range_top / 10.0) * 10)
-
-  print range_top
 
   tick_count = (range_top - (range_top % 10)) / 10
   tick_space = float(graph_height) / tick_count

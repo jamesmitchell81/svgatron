@@ -61,9 +61,6 @@ class Transform(object):
     for transform in self._transforms:
       values += self._transforms[transform] + " "
 
-
-    print values
-
     return values.strip()
 
 class Text(SVG):
@@ -75,7 +72,6 @@ class Text(SVG):
     self._y = y
     self._dx = dx
     self._dy = dy
-
     self._element.add(self._text)
 
   def shift(self, dx = 0, dy = 0):
