@@ -1,6 +1,7 @@
 import math
 from svg import SVGElement, SVGRoot
 from elements import Line, Text, Transform
+from graph import Graph
 from collect_data import collect_data
 
 def main():
@@ -25,6 +26,8 @@ def main():
   x_baseline = height - margin['bottom']
   y_baseline = margin['left']
   tick_length = 5
+
+  graph = Graph(width, height)
 
   root = SVGRoot(width, height)
   root.style({
